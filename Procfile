@@ -1,1 +1,1 @@
-web: gunicorn fitbot.wsgi
+web: gunicorn fitbot.wsgi --log-file -
