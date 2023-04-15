@@ -11,8 +11,9 @@ from .serializers import userSerializer
 @api_view(['GET'])
 def getRoutes(request):
     routes = [
-        {"POST": "create_session/"},
-        {"POST": "get_session/id"},
+        {"POST": "sessions/"},
+        {"GET": "sessions/id"},
+        {"POST": "sessions/id/prompt"},
     ]
     return Response(routes)
 
@@ -28,7 +29,7 @@ def createSession(request):
     return Response({'user_id': str(user.id)})
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 def getSession(request, id):
     user = user_history.objects.get(id = id)
     serializer  = userSerializer(user, many=False)
@@ -39,7 +40,7 @@ def getSession(request, id):
 def getResponse(request, id):
     user =  user_history.objects.get(id = id)
 
-    prompt = request.data['data'][0]['text']
+    prompt = request.data['data']['text']
 
     # If user history already exist
     if user.data:
@@ -47,7 +48,7 @@ def getResponse(request, id):
         recent_history.reverse()
         linker_prompts = []
         for i in recent_history:
-            if i['role'] == 'user':
+            if i['role'] == 'USER':
                 linker_prompts.append(i['text'])
             else:
                 pass
@@ -56,27 +57,29 @@ def getResponse(request, id):
         
         # if linked
         if linked:  
+            print("linked")
             history = " ".join([d['text'] for d in recent_history])
 
-            new_prompt = " ".join([prompt, history])
+            new_prompt = " ".join([prompt, " previous context: ", history])
             new_response = get_linked_response(new_prompt)
 
             chat_data = user.data
-            chat_data.append({'role':'user', "text":prompt})
-            chat_data.append({'role':'gpt', "text":new_response})
+            chat_data.append({'role':'USER', "text":prompt})
+            chat_data.append({'role':'GPT-3', "text":new_response})
             user.data = chat_data
             user.save()
 
         # if not linked
         else:
             fitness_related = checkPrompt(prompt)
+            print("not linked prompts")
             # if fitness related
             if fitness_related:
                 new_response = get_response(prompt)
 
                 chat_data = user.data
-                chat_data.append({'role':'user', "text":prompt})
-                chat_data.append({'role':'gpt', "text":new_response})
+                chat_data.append({'role':'USER', "text":prompt})
+                chat_data.append({'role':'GPT-3', "text":new_response})
                 user.data = chat_data
                 user.save()
 
@@ -86,8 +89,8 @@ def getResponse(request, id):
     else:
         new_response = get_response(prompt)
         chat_data = user.data
-        chat_data.append({'role':'user', "text":prompt})
-        chat_data.append({'role':'gpt', "text":new_response})
+        chat_data.append({'role':'USER', "text":prompt})
+        chat_data.append({'role':'GPT-3', "text":new_response})
         user.data = chat_data
         user.save()
 
