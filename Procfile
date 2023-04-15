@@ -1,1 +1,1 @@
-web: gunicorn devsearch.wsgi
+web: gunicorn fitbot.wsgi
