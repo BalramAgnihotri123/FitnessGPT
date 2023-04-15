@@ -87,12 +87,16 @@ def getResponse(request, id):
                 return Response({'response': "Please be more direct as I am only programmed to answer fitness-related questions. Can you please ask a fitness-related question?"})
 
     else:
-        new_response = get_response(prompt)
-        chat_data = user.data
-        chat_data.append({'role':'USER', "text":prompt})
-        chat_data.append({'role':'GPT-3', "text":new_response})
-        user.data = chat_data
-        user.save()
+        fitness_related = checkPrompt(prompt)
+        if fitness_related:
+            new_response = get_response(prompt)
+            chat_data = user.data
+            chat_data.append({'role':'USER', "text":prompt})
+            chat_data.append({'role':'GPT-3', "text":new_response})
+            user.data = chat_data
+            user.save()
+        else:
+            return Response({'response': "Please be more direct as I am only programmed to answer fitness-related questions. Can you please ask a fitness-related question?"})
 
 
     return Response({'response': str(new_response)})

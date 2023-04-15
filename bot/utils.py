@@ -14,7 +14,7 @@ openai.api_key = os.getenv("API_KEY")
 
 CHATGPT_PROMPT_FILTER = "not fitness related"
 
-CHATGPT_LINKED_FILTER = "YES"
+CHATGPT_LINKED_FILTER = "yes"
 
 
 linked_common_prompt = "Type YES if the last prompt is related to the previous two, otherwise type NO."
@@ -48,7 +48,7 @@ def checkPromptLinked(prompts):
         prompt = "\n".join([f"Prompt {i}: {text}"])
     response = generate_fitness_response(prompt, common_prompt = linked_common_prompt)
 
-    if str(response).__contains__(f"{CHATGPT_LINKED_FILTER}"):
+    if CHATGPT_LINKED_FILTER in str(response).lower():
         return 1
     else:
         return 0
