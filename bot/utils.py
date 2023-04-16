@@ -63,7 +63,7 @@ def checkPromptLinked(prompts):
 
 
 def get_response(prompt):
-    response = generate_fitness_response(prompt, common_prompt)
+    response = generate_fitness_response(prompt, common_prompt = '')
     return response
 
 def get_linked_response(prompt, common_prompt = ''):
