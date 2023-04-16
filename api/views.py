@@ -65,7 +65,7 @@ def getResponse(request, id):
             for i in range(0, len(temp_recent_history), 2):
                 try:
                     history.append({"text":f"\nuser: {temp_recent_history[i]['text']}"}) 
-                    history.append({"text":f"\nbot: {temp_recent_history[i+1]['text'][:200]}"})
+                    history.append({"text":f"\nbot: {temp_recent_history[i+1]['text'][:800]}"})
                 except:
                     pass
 

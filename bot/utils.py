@@ -19,7 +19,7 @@ CHATGPT_LINKED_FILTER = "yes"
 
 linked_common_prompt = "I am giving you prompts for a conversation with gpt-3.5, below. Reply with YES, if the context of the Last Prompt can be a follow-up to the response of any of the previous prompts, otherwise say NO"
 
-common_prompt = f'Answer only if following is a fitness related question otherwise just say: {CHATGPT_PROMPT_FILTER}: '
+common_prompt = f'Answer "yes" only if following is a fitness related question otherwise just say: {CHATGPT_PROMPT_FILTER}: '
 
 
 def generate_fitness_response(prompt, common_prompt, with_stop = True):
@@ -31,8 +31,8 @@ def generate_fitness_response(prompt, common_prompt, with_stop = True):
     print("prompt send to gpt: ",prompt_with_history)
     response = openai.Completion.create(
         engine="text-davinci-003",
-        prompt=prompt_with_history[:4000],
-        max_tokens=1500,
+        prompt=prompt_with_history[:3000],
+        max_tokens=150,
         n=1,
         temperature=0,
         stop="Stop:",
