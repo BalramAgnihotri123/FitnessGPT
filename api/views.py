@@ -65,15 +65,26 @@ def getResponse(request, id):
             for i in range(0, len(temp_recent_history), 2):
                 try:
                     history.append({"text":f"\nuser: {temp_recent_history[i]['text']}"}) 
-                    history.append({"text":f"\nbot: {temp_recent_history[i+1]['text'][:800]}"})
+                    history.append({"text":f"\nbot: {temp_recent_history[i+1]['text'][:400]}"})
                 except:
                     pass
 
             new_history = " ".join([d['text'] for d in history])
             print("new_history",new_history)
 
-            new_prompt = " ".join([prompt, " providing the previous chat context: ", new_history])
+            new_prompt = " ".join(["reply only for:", prompt, "\nI am providing the previous chat context: ", new_history])
             new_response = get_linked_response(new_prompt)
+
+            if len(new_response.split("\n")) == 1:
+                new_response = new_response
+                
+            elif len(new_response.split("\n")[0]) > 0:
+                print("length: ", new_response.split("\n"))
+                new_response = " ".join(new_response.split("\n")[:-1])
+            else:
+                new_response = new_response
+            
+            print("new_response",new_response)
 
             chat_data = user.data
             chat_data.append({'role':'USER', "text":prompt})
@@ -90,6 +101,17 @@ def getResponse(request, id):
                 print("\nfitness related\n")
                 new_response = get_response(prompt)
 
+                if len(new_response.split("\n")) == 1:
+                    new_response = new_response
+                    
+                elif len(new_response.split("\n")[0]) > 0:
+                    print("length: ", new_response.split("\n"))
+                    new_response = " ".join(new_response.split("\n")[:-1])
+                else:
+                    new_response = new_response
+                
+                print("new_response",new_response)
+
                 chat_data = user.data
                 chat_data.append({'role':'USER', "text":prompt})
                 chat_data.append({'role':'GPT-3', "text":new_response})
@@ -105,6 +127,18 @@ def getResponse(request, id):
         if fitness_related:
             print("\nfitness related\n")
             new_response = get_response(prompt)
+
+            if len(new_response.split("\n")) == 1:
+                new_response = new_response
+                
+            elif len(new_response.split("\n")[0]) > 0:
+                print("length: ", new_response.split("\n"))
+                new_response = " ".join(new_response.split("\n")[:-1])
+            else:
+                new_response = new_response
+            
+            print("new_response",new_response)
+
             chat_data = user.data
             chat_data.append({'role':'USER', "text":prompt})
             chat_data.append({'role':'GPT-3', "text":new_response})
