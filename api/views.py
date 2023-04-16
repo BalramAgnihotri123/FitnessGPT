@@ -80,7 +80,7 @@ def getResponse(request, id):
                 
             elif len(new_response.split("\n")[0]) > 0:
                 print("length: ", new_response.split("\n"))
-                new_response = " ".join(new_response.split("\n")[:-1])
+                new_response = "\n".join(new_response.split("\n")[:-1])
             else:
                 new_response = new_response
             
@@ -106,7 +106,7 @@ def getResponse(request, id):
                     
                 elif len(new_response.split("\n")[0]) > 0:
                     print("length: ", new_response.split("\n"))
-                    new_response = " ".join(new_response.split("\n")[:-1])
+                    new_response = "\n".join(new_response.split("\n")[:-1])
                 else:
                     new_response = new_response
                 
@@ -133,7 +133,7 @@ def getResponse(request, id):
                 
             elif len(new_response.split("\n")[0]) > 0:
                 print("length: ", new_response.split("\n"))
-                new_response = " ".join(new_response.split("\n")[:-1])
+                new_response = "\n".join(new_response.split("\n")[:-1])
             else:
                 new_response = new_response
             
