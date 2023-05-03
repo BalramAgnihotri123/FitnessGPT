@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 
-openai.api_key = os.getenv("API_KEY")
+openai.api_key = os.getenv("APIKEY")
 
 CHATGPT_PROMPT_FILTER = "no"
 

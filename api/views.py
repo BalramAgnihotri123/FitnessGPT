@@ -65,14 +65,14 @@ def getResponse(request, id):
             for i in range(0, len(temp_recent_history), 2):
                 try:
                     history.append({"text":f"\nuser: {temp_recent_history[i]['text']}"}) 
-                    history.append({"text":f"\nbot: {temp_recent_history[i+1]['text'][:400]}"})
+                    history.append({"text":f"\nbot: {temp_recent_history[i+1]['text'][:200]}"})
                 except:
                     pass
 
             new_history = " ".join([d['text'] for d in history])
             print("new_history",new_history)
 
-            new_prompt = " ".join(["the question:", prompt, "\nPlease use the context provided to answer the question without addressing the chat.\n The chat: ", new_history])
+            new_prompt = " ".join(["the question:", prompt, "\nPlease use the context provided to answer the question without addressing the chat.\n The chat: ", new_history, " and so on...."])
             new_response = get_linked_response(new_prompt)
 
             if len(new_response.split("\n")) == 1:
